@@ -2,10 +2,7 @@ package com.company;
 
 import com.company.model.*;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class which finds solution to the graph
@@ -21,7 +18,7 @@ public class PathFinder {
 
     private Graph graph;
     private LinkedList<Node> result = new LinkedList<>();
-    private Set<Node> visited = new HashSet<>();
+    private Stack<State> states = new Stack<>();
 
     /**
      * Constructor
@@ -52,25 +49,23 @@ public class PathFinder {
             pawn.move(getAvailableColor(pawn));
             System.out.println(pawn.getPosition().getId());
             result.add(pawn.getPosition());
-            visited.add(pawn.getPosition());
             if (isFinish(pawn.getPosition())) {
                 return;
             } else {
                 dfs(pawn);
             }
         } else {
-            setTurnTo(anotherPawn(pawn));
+            setTurnTo(anotherPawn());
             dfs(currentPawn);
         }
     }
 
     /**
      * The functions returns another pawn depending on the selected pawn
-     * @param pawn Selected pawn
      * @return Another pawn
      */
-    private Pawn anotherPawn(Pawn pawn) {
-        switch (pawn.getId()) {
+    private Pawn anotherPawn() {
+        switch (this.currentPawn.getId()) {
             case 1 :
                 return pawn2;
             case 2 :
